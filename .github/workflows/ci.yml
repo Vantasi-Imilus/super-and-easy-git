@@ -13,15 +13,34 @@ jobs:
         os: [windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       # The test suite only needs undici and a git binary; --omit=dev skips the
       # ~250 MB Electron download so CI stays fast.
       - run: npm ci --omit=dev
       - name: Toolchain versions (helps interpret failures)
+        shell: bash
         run: |
           node --version
           git --version
-      - run: npm test
+          # Also emitted as annotations: readable from the checks API without log access.
+          echo "::notice title=node::$(node --version)"
+          echo "::notice title=git::$(git --version)"
+      - name: Run tests (TAP output kept for annotations)
+        id: tests
+        shell: bash
+        run: |
+          set +e
+          node --test "test/**/*.test.js" > test-output.tap 2>&1
+          code=$?
+          tail -40 test-output.tap
+          exit $code
+      # Surface every failing test as a check annotation, so the failure is
+      # readable without downloading the job log.
+      - name: Annotate failing tests
+        if: failure()
+        shell: bash
+        run: |
+          grep -E "^not ok" test-output.tap | head -10 | sed 's/^/::error ::/' || true
