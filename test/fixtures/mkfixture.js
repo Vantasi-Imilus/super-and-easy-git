@@ -90,7 +90,12 @@ export async function makeFixture({
     tags.vA = tips.main;
   }
 
-  await git(['clone', '-q', '--bare', work, bare], root);
+  // Clone through file:// so git uses the transport instead of its local
+  // hardlink/copy optimization. The optimization intermittently dies with
+  // "failed to copy file to ...: No such file or directory" on some
+  // filesystems when a repository has many loose objects (observed on
+  // GitHub's ubuntu runners with the 20-branch fixture).
+  await git(['clone', '-q', '--bare', pathToFileURL(work).href, bare], root);
   if (allowFilter) {
     await git(['config', 'uploadpack.allowFilter', 'true'], bare);
   }
