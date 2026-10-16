@@ -37,10 +37,18 @@ jobs:
           code=$?
           tail -40 test-output.tap
           exit $code
-      # Surface every failing test as a check annotation, so the failure is
-      # readable without downloading the job log.
+      # Surface every failing test (and its error line) as a check annotation,
+      # so failures are readable without downloading the job log.
       - name: Annotate failing tests
         if: failure()
         shell: bash
         run: |
-          grep -E "^not ok" test-output.tap | head -10 | sed 's/^/::error ::/' || true
+          awk '
+            /^not ok/ { name = substr($0, 10); looking = 1; next }
+            looking && /^  error:/ {
+              line = $0
+              sub(/^  error: /, "", line)
+              print "::error title=" name "::" substr(line, 1, 400)
+              looking = 0
+            }
+          ' test-output.tap | head -20 || true
