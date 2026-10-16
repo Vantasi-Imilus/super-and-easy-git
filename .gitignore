@@ -4,6 +4,9 @@ out/
 *.log
 .DS_Store
 
+# TAP output written by the CI test step when run locally
+test-output.tap
+
 # Regenerable icon previews (`npm run icon`); the 1024px assets/icon.png and
 # build/icon.png are committed because the app and the packager use them directly.
 build/icons/

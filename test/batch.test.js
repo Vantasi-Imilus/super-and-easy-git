@@ -80,7 +80,9 @@ test('aborting a batch pauses running and queued tasks instead of throwing', asy
     repoOptions: { depth: 1, jobs: 2 },
     signal: controller.signal,
   }, (event) => {
-    if (!aborted && event.type === 'progress') {
+    // Abort as soon as the first task starts running: deterministic, unlike
+    // waiting for a progress line (a fast machine may finish the task first).
+    if (!aborted && event.type === 'task' && event.task?.state === 'running') {
       aborted = true;
       controller.abort();
     }

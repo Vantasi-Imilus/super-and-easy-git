@@ -136,7 +136,9 @@ test('interrupting a download and restarting resumes to a correct repo', async (
   const first = downloadRepo(
     { url: fx.url, dir, depth: 0, jobs: 4, baseDir: outRoot, signal: controller.signal },
     (e) => {
-      if (!aborted && e.type === 'progress') {
+      // Abort on the phase event that precedes the first fetch: deterministic,
+      // unlike waiting for a progress line (a fast machine may finish first).
+      if (!aborted && e.type === 'phase' && e.phase === 'default-branch') {
         aborted = true;
         controller.abort();
       }
@@ -144,6 +146,7 @@ test('interrupting a download and restarting resumes to a correct repo', async (
   );
   try {
     await first;
+    assert.fail('中断后的下载不应正常完成');
   } catch (err) {
     assert.ok(isAbortError(err), `中断应产生 AbortError，而不是：${err.message}`);
   }
