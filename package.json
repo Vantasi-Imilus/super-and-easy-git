@@ -1,0 +1,78 @@
+{
+  "name": "super-and-easy-git",
+  "productName": "Super and Easy Git",
+  "version": "0.1.0",
+  "private": true,
+  "description": "超级易用 Git 下载器 —— 基于 git 的多连接下载器：单仓库加速、批量克隆、大文件分发、HTTP 分段下载（GUI + CLI）",
+  "author": "Vantasi-Imilus",
+  "license": "GPL-2.0",
+  "homepage": "https://github.com/Vantasi-Imilus/super-and-easy-git#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vantasi-Imilus/super-and-easy-git.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Vantasi-Imilus/super-and-easy-git/issues"
+  },
+  "type": "module",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test \"test/**/*.test.js\"",
+    "gitdl": "node bin/gitdl.js",
+    "icon": "electron tools/make-icon.mjs",
+    "screenshot": "node tools/screenshot.mjs",
+    "prebuild:dir": "npm run icon",
+    "build:dir": "electron-builder --win --dir",
+    "prebuild:installer": "npm run icon",
+    "build:installer": "electron-builder --win nsis"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "undici": "^8.12.2"
+  },
+  "devDependencies": {
+    "electron": "^44.8.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "io.github.vantasi-imilus.super-and-easy-git",
+    "productName": "Super and Easy Git",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "electronDist": "node_modules/electron/dist",
+    "files": [
+      "src/**/*",
+      "bin/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "README.md"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "artifactName": "Super-and-Easy-Git-Setup-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "超级易用 Git 下载器",
+      "uninstallDisplayName": "超级易用 Git 下载器 (Super and Easy Git)"
+    }
+  }
+}

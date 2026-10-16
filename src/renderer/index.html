@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'">
+<title>超级易用 Git 下载器</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◈</span>
+    <div class="brand-text">
+      <h1>超级易用 Git 下载器</h1>
+      <p>Super and Easy Git · 基于 git 的多线程加速下载</p>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab is-active" data-view="single">单仓库加速</button>
+    <button class="tab" data-view="batch">批量下载</button>
+    <button class="tab" data-view="bigfile">大文件分发</button>
+    <button class="tab" data-view="http">HTTP 下载</button>
+  </nav>
+  <div class="topbar-right">
+    <span class="git-badge" id="git-badge" title="git 可执行文件状态">git: 检测中…</span>
+    <button class="icon-btn" id="settings-btn" title="设置">⚙</button>
+  </div>
+</header>
+
+<main id="view-root" class="view-root"></main>
+
+<footer class="statusbar">
+  <span id="status-text">就绪</span>
+  <span id="status-right" class="status-right"></span>
+</footer>
+
+<dialog id="settings-dialog" class="settings-dialog">
+  <div id="settings-root"></div>
+</dialog>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

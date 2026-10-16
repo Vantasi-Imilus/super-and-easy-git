@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Git 下载器图标：两条分支汇聚成一个下载箭头，落在托盘上 -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#5b9bff"/>
+      <stop offset="1" stop-color="#173ec2"/>
+    </linearGradient>
+    <linearGradient id="fg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dbeafe"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1024" height="1024" rx="200" fill="url(#bg)"/>
+  <rect x="60" y="34" width="904" height="300" rx="180" fill="#ffffff" opacity="0.09"/>
+
+  <!-- two branch strokes merging into the arrow (their rounded union hides the
+       joint underneath the arrowhead) -->
+  <g fill="none" stroke="#ffffff" stroke-width="66" stroke-linecap="round">
+    <path d="M 352 296 L 512 500"/>
+    <path d="M 672 296 L 512 500"/>
+  </g>
+  <circle cx="352" cy="290" r="60" fill="#ffffff"/>
+  <circle cx="672" cy="290" r="60" fill="#c7ddff"/>
+
+  <!-- download arrow -->
+  <path d="M 512 716 L 306 486 H 718 Z" fill="url(#fg)"/>
+  <rect x="292" y="778" width="440" height="102" rx="51" fill="#ffffff"/>
+</svg>
