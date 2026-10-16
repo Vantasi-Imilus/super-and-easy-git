@@ -1,0 +1,35 @@
+name: Release
+
+# 推送 v* 标签即自动发布：在 CI 中测试 → 构建 Windows 安装包 → 创建/更新 Release 并附加安装包。
+# 不需要本机凭据；重跑可在 Actions 页面用 "Re-run jobs"。
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows-installer:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Test before shipping
+        run: npm test
+      - name: Build NSIS installer
+        # 直接调用 electron-builder：图标与截图已提交到仓库，无需运行需要 GUI 会话的图标钩子。
+        run: npx electron-builder --win nsis
+      - name: Create the release and attach the installer
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --title "$tag" --generate-notes
+          gh release upload "$tag" dist/*Setup*.exe --clobber
+          gh release view "$tag" --json assets --jq '.assets[] | "\(.name) \(.size) bytes"'

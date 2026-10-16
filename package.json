@@ -1,7 +1,7 @@
 {
   "name": "super-and-easy-git",
   "productName": "Super and Easy Git",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "超级易用 Git 下载器 —— 基于 git 的多连接下载器：单仓库加速、批量克隆、大文件分发、HTTP 分段下载（GUI + CLI）",
   "author": "Vantasi-Imilus",
