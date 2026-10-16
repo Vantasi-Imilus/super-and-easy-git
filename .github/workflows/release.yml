@@ -23,7 +23,20 @@ jobs:
         run: npm test
       - name: Build NSIS installer
         # 直接调用 electron-builder：图标与截图已提交到仓库，无需运行需要 GUI 会话的图标钩子。
-        run: npx electron-builder --win nsis
+        # 不带 -c.electronDist：runner 上由 electron-builder 自行下载官方 Electron 发行包
+        #（本地脚本才复用 node_modules/electron/dist，见 README「打包」）。
+        shell: bash
+        run: |
+          set +e
+          npx electron-builder --win nsis --publish never > build.log 2>&1
+          code=$?
+          tail -30 build.log
+          exit $code
+      - name: Annotate build failure
+        if: failure()
+        shell: bash
+        run: |
+          grep -E "⨯|Error:" build.log | tail -5 | sed 's/^/::error ::/' || true
       - name: Create the release and attach the installer
         shell: bash
         env:

@@ -1,7 +1,7 @@
 {
   "name": "super-and-easy-git",
   "productName": "Super and Easy Git",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "超级易用 Git 下载器 —— 基于 git 的多连接下载器：单仓库加速、批量克隆、大文件分发、HTTP 分段下载（GUI + CLI）",
   "author": "Vantasi-Imilus",
@@ -23,9 +23,9 @@
     "icon": "electron tools/make-icon.mjs",
     "screenshot": "node tools/screenshot.mjs",
     "prebuild:dir": "npm run icon",
-    "build:dir": "electron-builder --win --dir",
+    "build:dir": "electron-builder --win --dir -c.electronDist=node_modules/electron/dist",
     "prebuild:installer": "npm run icon",
-    "build:installer": "electron-builder --win nsis"
+    "build:installer": "electron-builder --win nsis -c.electronDist=node_modules/electron/dist"
   },
   "engines": {
     "node": ">=20"
@@ -44,7 +44,6 @@
       "output": "dist",
       "buildResources": "build"
     },
-    "electronDist": "node_modules/electron/dist",
     "files": [
       "src/**/*",
       "bin/**/*",

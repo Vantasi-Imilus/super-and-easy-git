@@ -2,6 +2,18 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.1.2] - 2026-10-16
+
+应用功能与 0.1.0 相同，本版修复发布流水线。
+
+### 修复
+
+- 修复 Release 工作流在 CI 中构建失败：`electronDist` 不再硬编码在 `package.json`
+  的 `build` 配置里（CI 上 Electron 二进制未随 `npm ci` 下载，导致路径不存在而报错），
+  改为仅在本地构建脚本里用 `-c.electronDist=` 传入；CI 走 electron-builder 标准下载路径。
+- Release 工作流构建失败时会把错误行以 check annotations 发布，便于无日志排障；
+  显式声明 `--publish never`（避免依赖 v27 将移除的隐式发布行为）。
+
 ## [0.1.1] - 2026-10-16
 
 应用功能与 0.1.0 相同，本版为发布工程与测试稳定性改进。

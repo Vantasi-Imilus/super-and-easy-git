@@ -140,7 +140,8 @@ npm run icon              # 由 assets/icon.svg 重新生成图标 PNG
 npm run screenshot        # 重新生成 docs/screenshot.png
 ```
 
-- 打包使用 `npm install` 已装好的 Electron（`electronDist` 配置），不会重复下载官方 zip；
+- 本地打包复用 `npm install` 已装好的 Electron（脚本里的 `-c.electronDist=node_modules/electron/dist`），不重复下载官方 zip；
+  在 CI（Release 工作流）中不带该参数，由 electron-builder 自行下载官方发行包；
 - 首次构建需下载 NSIS 工具链，若 GitHub Releases 不通可换镜像：
   `ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/ npm run build:installer`；
 - **代码签名**：仓库不带证书，安装包默认未签名。自行签名可在 `build.win` 中配置
