@@ -35,7 +35,10 @@ test('parseContentDisposition handles plain, quoted and RFC 5987 names', () => {
 });
 
 test('segmented download uses multiple range requests and verifies sha256', async () => {
-  const srv = await startHttpServer({ size: 6 * 1024 * 1024, drip: { chunkSize: 256 * 1024, delayMs: 20 } });
+  // The drip pacing must be slow enough for the sliding-window speed meter to
+  // collect at least two samples on any machine (a local download on a fast CI
+  // runner finishes in a few dozen milliseconds otherwise).
+  const srv = await startHttpServer({ size: 6 * 1024 * 1024, drip: { chunkSize: 256 * 1024, delayMs: 60 } });
   const dir = await tmpdir();
   try {
     const events = [];

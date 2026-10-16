@@ -20,6 +20,8 @@ jobs:
       # The test suite only needs undici and a git binary; --omit=dev skips the
       # ~250 MB Electron download so CI stays fast.
       - run: npm ci --omit=dev
+      - name: Toolchain versions (helps interpret failures)
+        run: |
+          node --version
+          git --version
       - run: npm test
-      - name: Show git version used by the tests
-        run: git --version
